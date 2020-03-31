@@ -200,7 +200,7 @@ const seenCheck = (nameSpace,room,recordId,token)=>{
     })
     .then(response=> response.json())
 }
-const signUp = (nameSpace,mail,password,userName,data,token)=>{
+const signUp = (nameSpace,mail,password,userName,data)=>{
     return fetch(`/${nameSpace}/user/signup`,{
         method : 'post',
         headers :{
@@ -210,7 +210,7 @@ const signUp = (nameSpace,mail,password,userName,data,token)=>{
     })
     .then(response=> response.json())
 }
-const signIn = (nameSpace,mail,password,token)=>{
+const signIn = (nameSpace,mail,password)=>{
     return fetch(`/${nameSpace}/user/signin`,{
         method : 'post',
         headers :{
@@ -225,3 +225,81 @@ const socketListener = (event,nameSpace)=>{
         io(`/${nameSpace}`).on(event,resolve);
     })
 }
+
+const copy = (nameSpace,room,destination,recordId,token)=>{
+    return fetch(`/${nameSpace}/reference`,{
+        method : 'post',
+        headers :{
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body : JSON.stringify({room,recordId,destination})
+    })
+    .then(response=> response.json())
+}
+
+const cut = (nameSpace,room,destination,recordId,token)=>{
+    return fetch(`/${nameSpace}/reference`,{
+        method : 'put',
+        headers :{
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body : JSON.stringify({room,recordId,destination})
+    })
+    .then(response=> response.json())
+}
+
+const removeRecord = (nameSpace,room,recordId,token)=>{
+    return fetch(`/${nameSpace}/reference`,{
+        method : 'delete',
+        headers :{
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body : JSON.stringify({room,recordId})
+    })
+    .then(response=> response.json())
+}
+
+const createNestedRoom = (nameSpace,room,data,token)=>{
+    return fetch(`/${nameSpace}/nestedRoom`,{
+        method : 'post',
+        headers :{
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body : JSON.stringify({room,data})
+    })
+    .then(response=> response.json())
+}
+
+const getNestedRooms = (nameSpace,room,token)=>{
+    return fetch(`/${nameSpace}/rooms`,{
+        method : 'get',
+        headers :{
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body : JSON.stringify({room})
+    })
+    .then(response=> response.json())
+}
+
+/***************************************************************************************************************************************/
+
+// create(2);
+
+let token;
+
+// signUp(2,'anotherAhmed0grwan@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"})).then(console.log).catch(console.log)
+
+signIn(2,'ahmed0grwan@gmail.com','oshgos').then(data=>{
+    token = data.token;
+})
+.then(()=>{
+    return createRoom(2,JSON.stringify({title : "this is also gonna be awesome"}),token)
+})
+.then(console.log)
+
+// drop(2);
