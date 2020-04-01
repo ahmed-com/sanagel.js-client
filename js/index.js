@@ -1,6 +1,6 @@
 //this is testing
 
-const create = nameSpace=>{
+const create = nameSpace=>{//
     return fetch('/api/create',{
         method : 'post',
         headers : {'Content-Type' : 'application/json'},
@@ -8,7 +8,7 @@ const create = nameSpace=>{
     })
     .then(response=> response.json())
 }
-const drop = nameSpace=>{
+const drop = nameSpace=>{//
     return fetch('/api/delete',{
         method : 'delete',
         headers : {'Content-Type' : 'application/json'},
@@ -16,7 +16,7 @@ const drop = nameSpace=>{
     })
     .then(response=> response.json())
 }
-const createRoom = (nameSpace,data,token)=>{
+const createRoom = (nameSpace,data,token)=>{//
     return fetch(`/${nameSpace}/room`,{
         method : 'post',
         headers :{
@@ -200,7 +200,7 @@ const seenCheck = (nameSpace,room,recordId,token)=>{
     })
     .then(response=> response.json())
 }
-const signUp = (nameSpace,mail,password,userName,data)=>{
+const signUp = (nameSpace,mail,password,userName,data)=>{//
     return fetch(`/${nameSpace}/user/signup`,{
         method : 'post',
         headers :{
@@ -210,7 +210,7 @@ const signUp = (nameSpace,mail,password,userName,data)=>{
     })
     .then(response=> response.json())
 }
-const signIn = (nameSpace,mail,password)=>{
+const signIn = (nameSpace,mail,password)=>{//
     return fetch(`/${nameSpace}/user/signin`,{
         method : 'post',
         headers :{
@@ -287,19 +287,31 @@ const getNestedRooms = (nameSpace,room,token)=>{
 }
 
 /***************************************************************************************************************************************/
-
-// create(2);
-
-let token;
-
-// signUp(2,'anotherAhmed0grwan@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"})).then(console.log).catch(console.log)
-
-signIn(2,'ahmed0grwan@gmail.com','oshgos').then(data=>{
-    token = data.token;
-})
+const nameSpace = 1
+create(nameSpace)
 .then(()=>{
-    return createRoom(2,JSON.stringify({title : "this is also gonna be awesome"}),token)
+    let token;
+    
+    const socket = io(`/${nameSpace}`);
+    socket.on('connect',()=>{
+        console.log(socket.id);
+        signUp(nameSpace,'ahmed@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
+        .then(res=>{
+            console.log(res)
+            return signIn(nameSpace,'ahmed@gmail.com','oshgos');
+        })
+        .then(data=>{
+            console.log(data);
+            token = data.token;
+            return createRoom(nameSpace,JSON.stringify({title : "this is also gonna be awesome"}),token)
+        })
+        .then(res=>{
+            console.log(res);
+            return createRecord(nameSpace,res.room.id,JSON.stringify({recordTitle : "this is gonna be awesome"}),token);
+        })
+        .then(console.log)
+    });
 })
-.then(console.log)
 
-// drop(2);
+
+// drop(1)
