@@ -287,7 +287,13 @@ const getNestedRooms = (nameSpace,room,token)=>{
 }
 
 /***************************************************************************************************************************************/
-const nameSpace = 1
+
+function wait(time){
+    const end = Date.now()+time;
+    while(Date.now() < end){}
+}
+
+const nameSpace = 5
 create(nameSpace)
 .then(()=>{
     let token;
@@ -307,6 +313,7 @@ create(nameSpace)
         })
         .then(res=>{
             console.log(res);
+            wait(3000)
             return createRecord(nameSpace,res.room.id,JSON.stringify({recordTitle : "this is gonna be awesome"}),token);
         })
         .then(console.log)
