@@ -293,32 +293,27 @@ function wait(time){
     while(Date.now() < end){}
 }
 
-const nameSpace = 5
-create(nameSpace)
-.then(()=>{
-    let token;
-    
-    const socket = io(`/${nameSpace}`);
-    socket.on('connect',()=>{
-        console.log(socket.id);
-        signUp(nameSpace,'ahmed@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
-        .then(res=>{
-            console.log(res)
-            return signIn(nameSpace,'ahmed@gmail.com','oshgos');
-        })
-        .then(data=>{
-            console.log(data);
-            token = data.token;
-            return createRoom(nameSpace,JSON.stringify({title : "this is also gonna be awesome"}),token)
-        })
-        .then(res=>{
-            console.log(res);
-            wait(3000)
-            return createRecord(nameSpace,res.room.id,JSON.stringify({recordTitle : "this is gonna be awesome"}),token);
-        })
-        .then(console.log)
-    });
-})
+const nameSpace = 'tenth';
 
+let token;
 
-// drop(1)
+const socket = io(`/${nameSpace}`);
+socket.on('connect',()=>{
+    console.log(socket.id);
+    signUp(nameSpace,'ahmed@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
+    .then(res=>{
+        console.log(res)
+        return signIn(nameSpace,'ahmed@gmail.com','oshgos');
+    })
+    .then(data=>{
+        console.log(data);
+        token = data.token;
+        return createRoom(nameSpace,JSON.stringify({title : "this is also gonna be awesome"}),token)
+    })
+    .then(res=>{
+        console.log(res);
+        wait(3000)
+        return createRecord(nameSpace,res.room.id,JSON.stringify({recordTitle : "this is gonna be awesome"}),token);
+    })
+    .then(console.log)
+});
