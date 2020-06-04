@@ -220,6 +220,17 @@ const signIn = (nameSpace,mail,password)=>{//
     })
     .then(response=> response.json())
 }
+const updateUser = (nameSpace,data,token)=>{
+    return fetch(`/${nameSpace}/user/update`,{
+        method : 'put',
+        headers :{
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body : JSON.stringify({data})
+    })
+    .then(response=> response.json())
+}
 const socketListener = (event,nameSpace)=>{
     return new Promise((resolve,reject)=>{
         io(`/${nameSpace}`).on(event,resolve);
@@ -300,20 +311,27 @@ let token;
 const socket = io(`/${nameSpace}`);
 socket.on('connect',()=>{
     console.log(socket.id);
-    signUp(nameSpace,'zblob@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
-    .then(res=>{
-        console.log(res)
-        return signIn(nameSpace,'ahmed@gmail.com','oshgos');
-    })
+    // signUp(nameSpace,'zblob@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
+    // .then(res=>{
+    //     console.log(res)
+    //     return signIn(nameSpace,'ahmed@gmail.com','oshgos');
+    // })
+    // .then(data=>{
+    //     console.log(data);
+    //     token = data.token;
+    //     return createRoom(nameSpace,JSON.stringify({title : "this is also gonna be awesome"}),token)
+    // })
+    // .then(res=>{
+    //     console.log(res);
+    //     wait(3000)
+    //     return createNestedRoom(nameSpace,res.room.id,JSON.stringify({roomTitle : "this is gonna be awesome"}),token);
+    // })
+    // .then(console.log)
+    signIn(nameSpace,'zblob@gmail.com','oshgos')
     .then(data=>{
         console.log(data);
         token = data.token;
-        return createRoom(nameSpace,JSON.stringify({title : "this is also gonna be awesome"}),token)
+        return updateUser(nameSpace,JSON.stringify({public : "I don't like to shower"}),token);
     })
-    .then(res=>{
-        console.log(res);
-        wait(3000)
-        return createNestedRoom(nameSpace,res.room.id,JSON.stringify({roomTitle : "this is gonna be awesome"}),token);
-    })
-    .then(console.log)
+    .then(console.log);
 });
