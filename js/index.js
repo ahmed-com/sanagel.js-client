@@ -300,7 +300,7 @@ let token;
 const socket = io(`/${nameSpace}`);
 socket.on('connect',()=>{
     console.log(socket.id);
-    signUp(nameSpace,'ahmed@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
+    signUp(nameSpace,'zblob@gmail.com','oshgos','ahmed',JSON.stringify({public : "I like to shower"}))
     .then(res=>{
         console.log(res)
         return signIn(nameSpace,'ahmed@gmail.com','oshgos');
@@ -313,7 +313,7 @@ socket.on('connect',()=>{
     .then(res=>{
         console.log(res);
         wait(3000)
-        return createRecord(nameSpace,res.room.id,JSON.stringify({recordTitle : "this is gonna be awesome"}),token);
+        return createNestedRoom(nameSpace,res.room.id,JSON.stringify({roomTitle : "this is gonna be awesome"}),token);
     })
     .then(console.log)
 });
