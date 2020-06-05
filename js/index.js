@@ -94,7 +94,7 @@ const remove = (nameSpace,room,removedId,token)=>{
 }
 const getSubscribers = (nameSpace,room,token)=>{
     return fetch(`/${nameSpace}/subscribers`,{
-        method : 'get',
+        method : 'post',
         headers :{
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
@@ -116,7 +116,7 @@ const deleteRoom = (nameSpace,room,token)=>{
 }
 const getAllRecords = (nameSpace,room,token)=>{
     return fetch(`/${nameSpace}/records`,{
-        method : 'get',
+        method : 'post',
         headers :{
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
@@ -127,7 +127,7 @@ const getAllRecords = (nameSpace,room,token)=>{
 }
 const getUnseenRecords = (nameSpace,token)=>{
     return fetch(`/${nameSpace}/records/unseen`,{
-        method : 'get',
+        method : 'post',
         headers :{
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
@@ -137,7 +137,7 @@ const getUnseenRecords = (nameSpace,token)=>{
 }
 const getUserRecords = (nameSpace,token)=>{
     return fetch(`/${nameSpace}/records/user`,{
-        method : 'get',
+        method : 'post',
         headers :{
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
@@ -147,7 +147,7 @@ const getUserRecords = (nameSpace,token)=>{
 }
 const getRecord = (nameSpace,room,recordId,token)=>{
     return fetch(`/${nameSpace}/record`,{
-        method : 'get',
+        method : 'post',
         headers :{
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
@@ -287,7 +287,7 @@ const createNestedRoom = (nameSpace,room,data,token)=>{
 
 const getNestedRooms = (nameSpace,room,token)=>{
     return fetch(`/${nameSpace}/rooms`,{
-        method : 'get',
+        method : 'post',
         headers :{
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
@@ -327,11 +327,12 @@ socket.on('connect',()=>{
     //     return createNestedRoom(nameSpace,res.room.id,JSON.stringify({roomTitle : "this is gonna be awesome"}),token);
     // })
     // .then(console.log)
-    signIn(nameSpace,'zblob@gmail.com','oshgos')
+    signIn(nameSpace,'ahmed@gmail.com','oshgos')
     .then(data=>{
         console.log(data);
         token = data.token;
-        return updateUser(nameSpace,JSON.stringify({public : "I don't like to shower"}),token);
+        // return updateUser(nameSpace,JSON.stringify({public : "I don't like to shower"}),token);
+        return getAllRecords(nameSpace,1,token);
     })
     .then(console.log);
 });
